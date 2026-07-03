@@ -1,0 +1,36 @@
+# ==============================================================================
+# docker-compose.yml - Benchmark Demucs (secuencial / joblib / ray)
+#
+# Uso:
+#   1. cp env.example .env        (y edita .env si quieres cambiar algo)
+#   2. docker compose up --build
+#   3. Revisa los resultados en ./data/resultados/
+#
+# Para usar GPU, descomenta el bloque "deploy" de más abajo y en tu .env
+# pon DEVICE=cuda. Requiere tener instalado NVIDIA Container Toolkit en el
+# host (https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/).
+# ==============================================================================
+services:
+  demucs-benchmark:
+    build: .
+    image: demucs-benchmark:latest
+    container_name: demucs_benchmark
+    env_file:
+      - .env
+    volumes:
+      # Pon tus propias canciones aquí (opcional). Si esta carpeta queda
+      # vacía, el contenedor genera automáticamente un audio sintético de
+      # prueba para que igual puedas correr el benchmark.
+      - ./data/song:/data/song
+      # Acá quedan los resultados (JSON, gráficos PNG, CSV) ya en tu
+      # computador, aunque el contenedor se borre después.
+      - ./data/resultados:/data/resultados
+
+    # --- Descomenta este bloque para usar GPU NVIDIA ---
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]

@@ -1,0 +1,42 @@
+# ==============================================================================
+# requirements.txt - Benchmark Demucs (secuencial / joblib / ray)
+#
+# Si usas Docker (recomendado, ver DOCKER.md) NO necesitas instalar nada de
+# esto a mano: el Dockerfile ya lo hace por ti.
+#
+# Si prefieres correrlo sin Docker, en un entorno virtual de Python 3.10+:
+#   python -m venv venv && source venv/bin/activate   (Linux/Mac)
+#   pip install -r requirements.txt
+# y además necesitas ffmpeg instalado a nivel de sistema:
+#   - Ubuntu/Debian: sudo apt install ffmpeg
+#   - Mac (Homebrew): brew install ffmpeg
+#   - Windows: https://ffmpeg.org/download.html (agregarlo al PATH)
+# ==============================================================================
+
+# Separación de fuentes de audio. Instala automáticamente PyTorch como
+# dependencia (puede pesar varios cientos de MB a un par de GB según tu
+# sistema operativo/GPU) y descarga los pesos del modelo la PRIMERA vez
+# que se ejecuta (requiere internet en ese momento).
+demucs
+
+# Lectura/escritura de archivos de audio
+soundfile
+numpy
+
+# Monitoreo de recursos (CPU, RAM, threads del proceso)
+psutil
+
+# Paralelismo multiproceso en un solo computador (modo "joblib"/"parallel")
+joblib
+
+# Paralelismo/distribución de tareas (modo "ray")
+ray[default]
+
+# Generación de los gráficos comparativos
+matplotlib
+
+# Opcional pero recomendado si hay GPU NVIDIA disponible: permite medir
+# uso de GPU, memoria de GPU y potencia (W) vía NVML. Si no hay GPU o no
+# se puede instalar, el benchmark simplemente deja esas métricas en null
+# sin fallar.
+nvidia-ml-py
